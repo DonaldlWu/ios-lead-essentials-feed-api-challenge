@@ -18,7 +18,7 @@ public final class RemoteFeedLoader: FeedLoader {
 		self.client = client
 	}
 
-	public func load(completion: @escaping (FeedLoader.Result) -> Void) {
+	public func load(completion: @escaping (RemoteFeedLoader.Result) -> Void) {
 		client.get(from: url, completion: { [weak self] result in
 			guard self != nil else { return }
 
@@ -53,7 +53,7 @@ private final class FeedImageMapper {
 
 	private static var OK_200: Int { return 200 }
 
-	static func map(_ data: Data, _ response: HTTPURLResponse) -> FeedLoader.Result {
+	static func map(_ data: Data, _ response: HTTPURLResponse) -> RemoteFeedLoader.Result {
 		guard response.statusCode == OK_200,
 		      let root = try? JSONDecoder().decode(Root.self, from: data) else {
 			return .failure(RemoteFeedLoader.Error.invalidData)
